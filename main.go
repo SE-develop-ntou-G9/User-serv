@@ -25,5 +25,5 @@ func main() {
 	authUC := usecase.NewAuthUsecase(userRepo) // Assuming you have a userRepo instance
 	delivHTTP.RegisterAuthRoutes(v1, authUC)
 
-	router.Run(":8000")
+	router.Run(":8080")
 }
