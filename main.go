@@ -22,9 +22,11 @@ func main() {
 	userRepo := repositories.NewUserRepository(db)
 
 	router := gin.Default()
-	v1 := router.Group("/v1")
 
 	router.Use(cors.Default())
+	v1 := router.Group("/v1")
+
+	
 
 	authUC := usecase.NewAuthUsecase(userRepo) // Assuming you have a userRepo instance
 	delivHTTP.RegisterAuthRoutes(v1, authUC)
