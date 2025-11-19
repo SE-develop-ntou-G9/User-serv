@@ -6,6 +6,7 @@ import (
 	"golangAPI/repositories"
 	"golangAPI/usecase"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,6 +22,8 @@ func main() {
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
+
+	router.Use(cors.Default())
 
 	authUC := usecase.NewAuthUsecase(userRepo) // Assuming you have a userRepo instance
 	delivHTTP.RegisterAuthRoutes(v1, authUC)
