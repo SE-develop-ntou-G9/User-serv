@@ -2,8 +2,6 @@ package usecase
 
 import (
 	"golangAPI/entity"
-
-	"github.com/markbates/goth"
 )
 
 type UserRepository interface {
@@ -19,14 +17,14 @@ func NewAuthUsecase(r UserRepository) *AuthUsecase {
 	return &AuthUsecase{userRepo: r}
 }
 
-func (uc *AuthUsecase) LoginWithOAuth(provider string, gUser goth.User) (*entity.User, string, error) {
-	u, err := uc.userRepo.FindByProviderID(provider, gUser.UserID)
+func (uc *AuthUsecase) LoginWithOAuth(provider string, gUser entity.User) (*entity.User, string, error) {
+	u, err := uc.userRepo.FindByProviderID(provider, gUser.ProviderUserID)
 	if err != nil || u == nil {
 		newUser := &entity.User{
 			Email:          gUser.Email,
 			Name:           gUser.Name,
 			Provider:       provider,
-			ProviderUserID: gUser.UserID,
+			ProviderUserID: gUser.ProviderUserID,
 		}
 
 		u, err = uc.userRepo.Create(newUser)
