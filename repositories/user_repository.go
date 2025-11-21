@@ -68,3 +68,20 @@ func (r *userRepository) CreateDriver(driver *entity.Driver) (*entity.Driver, er
 
 	return driver, nil
 }
+
+func (r *userRepository) EditUser(user *entity.User) (*entity.User, error) {
+	m := Model.UserModel{
+		ID:             user.ID,
+		Provider:       user.Provider,
+		ProviderUserID: user.ProviderUserID,
+		Email:          user.Email,
+		Name:           user.Name,
+		PhoneNumber:    user.PhoneNumber,
+	}
+
+	err := r.db.Model(&Model.UserModel{}).Where("user_id = ?", user.ID).Updates(m).Error
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
