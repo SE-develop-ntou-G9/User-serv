@@ -19,3 +19,7 @@ func (uc *UserUsecase) CreateUser(u entity.User) (*entity.User, error) {
 func (uc *UserUsecase) CreateDriver(d entity.Driver) (*entity.Driver, error) {
 	return uc.repo.CreateDriver(&d)
 }
+
+func (uc *UserUsecase) EditUser(u entity.User) (*entity.User, error) {
+	return uc.repo.EditUser(&u)
+}
