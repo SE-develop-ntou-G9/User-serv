@@ -24,7 +24,7 @@ func NewDBInstance() (*gorm.DB, error) {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	err = DB.AutoMigrate(&Model.UserModel{})
+	err = DB.AutoMigrate(&Model.UserModel{}, &Model.DriverModel{})
 	if err != nil {
 		log.Fatal("Failed to migrate database: ", err)
 	}

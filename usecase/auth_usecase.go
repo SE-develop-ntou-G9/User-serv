@@ -4,11 +4,6 @@ import (
 	"golangAPI/entity"
 )
 
-type UserRepository interface {
-	FindByProviderID(provider, providerUserID string) (*entity.User, error)
-	Create(user *entity.User) (*entity.User, error)
-}
-
 type AuthUsecase struct {
 	userRepo UserRepository
 }
@@ -21,6 +16,7 @@ func (uc *AuthUsecase) LoginWithOAuth(provider string, gUser entity.User) (*enti
 	u, err := uc.userRepo.FindByProviderID(provider, gUser.ProviderUserID)
 	if err != nil || u == nil {
 		newUser := &entity.User{
+			ID:             gUser.ID,
 			Email:          gUser.Email,
 			Name:           gUser.Name,
 			Provider:       provider,
