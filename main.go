@@ -12,6 +12,7 @@ import (
 
 func main() {
 	db, err := infrastructure.NewDBInstance()
+
 	if err != nil {
 		panic("Failed to connect to database")
 	}
