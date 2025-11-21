@@ -6,6 +6,7 @@ type User struct {
 	ProviderUserID string
 	Email          string
 	Name           string
+	PhoneNumber    string
 }
 
 type Driver struct {
