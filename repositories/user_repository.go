@@ -25,7 +25,7 @@ func (r *userRepository) FindByProviderID(provider, providerUserID string) (*ent
 	}
 
 	return &entity.User{
-		ID:             uint(m.Id),
+		ID:             m.ID,
 		Provider:       m.Provider,
 		ProviderUserID: m.ProviderUserID,
 		Email:          m.Email,
@@ -35,6 +35,7 @@ func (r *userRepository) FindByProviderID(provider, providerUserID string) (*ent
 
 func (r *userRepository) Create(user *entity.User) (*entity.User, error) {
 	m := Model.UserModel{
+		ID:             user.ID,
 		Provider:       user.Provider,
 		ProviderUserID: user.ProviderUserID,
 		Email:          user.Email,
@@ -46,7 +47,24 @@ func (r *userRepository) Create(user *entity.User) (*entity.User, error) {
 		return nil, err
 	}
 
-	user.ID = uint(m.Id)
+	user.ID = m.ID
 
 	return user, nil
+}
+
+func (r *userRepository) CreateDriver(driver *entity.Driver) (*entity.Driver, error) {
+	m := Model.DriverModel{
+		UserID:      driver.UserID,
+		Name:        driver.Name,
+		ContactInfo: driver.ContactInfo,
+		ScooterType: driver.ScooterType,
+		PlateNum:    driver.PlateNum,
+	}
+
+	err := r.db.Create(&m).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return driver, nil
 }
