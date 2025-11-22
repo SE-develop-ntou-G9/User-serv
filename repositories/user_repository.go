@@ -85,3 +85,36 @@ func (r *userRepository) EditUser(user *entity.User) (*entity.User, error) {
 	}
 	return user, nil
 }
+
+func (r *userRepository) GetUserByID(id string) (*entity.User, error) {
+	var m Model.UserModel
+
+	err := r.db.Where("user_id = ?", id).First(&m).Error
+	if err != nil {
+		return nil, err
+	}
+	return &entity.User{
+		ID:             m.ID,
+		Provider:       m.Provider,
+		ProviderUserID: m.ProviderUserID,
+		Email:          m.Email,
+		Name:           m.Name,
+		PhoneNumber:    m.PhoneNumber,
+	}, nil
+}
+
+func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error) {
+	var m Model.DriverModel
+
+	err := r.db.Where("user_id = ?", userID).First(&m).Error
+	if err != nil {
+		return nil, err
+	}
+	return &entity.Driver{
+		UserID:      m.UserID,
+		Name:        m.Name,
+		ContactInfo: m.ContactInfo,
+		ScooterType: m.ScooterType,
+		PlateNum:    m.PlateNum,
+	}, nil
+}

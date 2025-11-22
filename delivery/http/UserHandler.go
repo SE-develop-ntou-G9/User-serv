@@ -17,6 +17,8 @@ func RegisterDriverRoutes(r gin.IRoutes, userUC *usecase.UserUsecase) {
 
 	r.POST("/users/driver", h.PostDriver)
 	r.PUT("/users/mod", h.EditUser)
+	r.GET("/users/:id", h.GetUserByID)
+	r.GET("/drivers/user/:user_id", h.GetDriverByUserID)
 }
 
 func (h *UserHandler) PostUser(c *gin.Context) {
@@ -63,4 +65,24 @@ func (h *UserHandler) EditUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, edited)
+}
+
+func (h *UserHandler) GetUserByID(c *gin.Context) {
+	id := c.Param("id")
+	user, err := h.userUC.GetUserByID(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, user)
+}
+
+func (h *UserHandler) GetDriverByUserID(c *gin.Context) {
+	userID := c.Param("user_id")
+	driver, err := h.userUC.GetDriverByUserID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, driver)
 }

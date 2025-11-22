@@ -9,4 +9,6 @@ type UserRepository interface {
 	Create(user *entity.User) (*entity.User, error)
 	CreateDriver(driver *entity.Driver) (*entity.Driver, error)
 	EditUser(user *entity.User) (*entity.User, error)
+	GetUserByID(id string) (*entity.User, error)
+	GetDriverByUserID(userID string) (*entity.Driver, error)
 }
