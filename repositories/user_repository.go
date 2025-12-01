@@ -118,3 +118,37 @@ func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error
 		PlateNum:    m.PlateNum,
 	}, nil
 }
+
+func (r *userRepository) DeleteAllUser() error {
+	err := r.db.Exec("DELETE FROM driver_models").Error
+	if err != nil {
+		return err
+	}
+
+	err = r.db.Exec("DELETE FROM user_models").Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *userRepository) DeleteUserByID(id string) error {
+	err := r.db.Where("user_id = ?", id).Delete(&Model.DriverModel{}).Error
+	if err != nil {
+		return err
+	}
+	err = r.db.Where("user_id = ?", id).Delete(&Model.UserModel{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *userRepository) DeleteDriverByUserID(userID string) error {
+	err := r.db.Where("user_id = ?", userID).Delete(&Model.DriverModel{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
