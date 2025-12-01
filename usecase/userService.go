@@ -43,3 +43,7 @@ func (uc *UserUsecase) DeleteUserByID(id string) error {
 func (uc *UserUsecase) DeleteDriverByUserID(userID string) error {
 	return uc.repo.DeleteDriverByUserID(userID)
 }
+
+func (uc *UserUsecase) EditDriver(d entity.Driver) (*entity.Driver, error) {
+	return uc.repo.EditDriver(&d)
+}
