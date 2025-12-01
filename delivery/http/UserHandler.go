@@ -22,6 +22,7 @@ func RegisterDriverRoutes(r gin.IRoutes, userUC *usecase.UserUsecase) {
 	r.DELETE("/users/deleteAll", h.DeleteAllUser)
 	r.DELETE("/users/delete/:id", h.DeleteUserByID)
 	r.DELETE("/drivers/delete/:user_id", h.DeleteDriverByUserID)
+	r.PUT("/drivers/mod", h.EditDriver)
 }
 
 func (h *UserHandler) PostUser(c *gin.Context) {
@@ -118,4 +119,18 @@ func (h *UserHandler) DeleteDriverByUserID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Driver deleted successfully"})
+}
+
+func (h *UserHandler) EditDriver(c *gin.Context) {
+	var body entity.Driver
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	edited, err := h.userUC.EditDriver(body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, edited)
 }

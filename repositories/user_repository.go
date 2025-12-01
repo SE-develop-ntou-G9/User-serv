@@ -152,3 +152,19 @@ func (r *userRepository) DeleteDriverByUserID(userID string) error {
 	}
 	return nil
 }
+
+func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, error) {
+	m := Model.DriverModel{
+		UserID:      driver.UserID,
+		Name:        driver.Name,
+		ContactInfo: driver.ContactInfo,
+		ScooterType: driver.ScooterType,
+		PlateNum:    driver.PlateNum,
+	}
+	err := r.db.Model(&Model.DriverModel{}).Where("user_id = ?", driver.UserID).Updates(m).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return driver, nil
+}

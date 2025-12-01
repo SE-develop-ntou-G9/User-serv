@@ -14,4 +14,5 @@ type UserRepository interface {
 	DeleteAllUser() error
 	DeleteUserByID(id string) error
 	DeleteDriverByUserID(userID string) error
+	EditDriver(driver *entity.Driver) (*entity.Driver, error)
 }
