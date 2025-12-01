@@ -19,6 +19,9 @@ func RegisterDriverRoutes(r gin.IRoutes, userUC *usecase.UserUsecase) {
 	r.PUT("/users/mod", h.EditUser)
 	r.GET("/users/:id", h.GetUserByID)
 	r.GET("/drivers/user/:user_id", h.GetDriverByUserID)
+	r.DELETE("/users/deleteAll", h.DeleteAllUser)
+	r.DELETE("/users/delete/:id", h.DeleteUserByID)
+	r.DELETE("/drivers/delete/:user_id", h.DeleteDriverByUserID)
 }
 
 func (h *UserHandler) PostUser(c *gin.Context) {
@@ -85,4 +88,34 @@ func (h *UserHandler) GetDriverByUserID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, driver)
+}
+
+func (h *UserHandler) DeleteAllUser(c *gin.Context) {
+	err := h.userUC.DeleteAllUser()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "All users deleted successfully"})
+}
+
+func (h *UserHandler) DeleteUserByID(c *gin.Context) {
+	id := c.Param("id")
+	err := h.userUC.DeleteUserByID(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
+}
+
+func (h *UserHandler) DeleteDriverByUserID(c *gin.Context) {
+	userID := c.Param("user_id")
+	err := h.userUC.DeleteDriverByUserID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Driver deleted successfully"})
 }
