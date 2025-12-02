@@ -23,10 +23,15 @@ func NewS3Client() *S3Client {
 		log.Fatal("S3_BUCKET_NAME or AWS_REGION is not set")
 	}
 
-	cfg, err := config.LoadDefaultConfig(context.Background())
+	cfg, err := config.LoadDefaultConfig(
+		context.Background(),
+		config.WithRegion(region),
+	)
 	if err != nil {
 		log.Fatalf("unable to load AWS config: %v", err)
 	}
+
+	log.Printf("[S3 DEBUG] cfg.Region = %q\n", cfg.Region)
 
 	client := s3.NewFromConfig(cfg)
 
