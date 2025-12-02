@@ -12,7 +12,7 @@ import (
 
 func main() {
 	db, err := infrastructure.NewDBInstance()
-
+	s3client := infrastructure.NewS3Client()
 	if err != nil {
 		panic("Failed to connect to database")
 	}
@@ -20,6 +20,7 @@ func main() {
 	infrastructure.InitAuth()
 
 	userRepo := repositories.NewUserRepository(db)
+	imageRepo := repositories.NewImageRepository(s3client)
 
 	router := gin.Default()
 
@@ -30,8 +31,10 @@ func main() {
 
 	authUC := usecase.NewAuthUsecase(userRepo) // Assuming you have a userRepo instance
 	userUC := usecase.NewUserUsecase(userRepo)
+	imageUC := usecase.NewImageUsecase(imageRepo)
 	delivHTTP.RegisterAuthRoutes(v1, authUC)
-	delivHTTP.RegisterDriverRoutes(v1, userUC)
+	delivHTTP.RegisterUserRoutes(v1, userUC)
+	delivHTTP.RegisterImageRoutes(v1, imageUC)
 
 	router.Run(":8080")
 }

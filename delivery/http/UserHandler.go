@@ -12,7 +12,7 @@ type UserHandler struct {
 	userUC *usecase.UserUsecase
 }
 
-func RegisterDriverRoutes(r gin.IRoutes, userUC *usecase.UserUsecase) {
+func RegisterUserRoutes(r gin.IRoutes, userUC *usecase.UserUsecase) {
 	h := &UserHandler{userUC: userUC}
 
 	r.POST("/users/driver", h.PostDriver)
