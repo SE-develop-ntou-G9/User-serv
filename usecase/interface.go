@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"golangAPI/entity"
+	"mime/multipart"
 )
 
 type UserRepository interface {
@@ -15,4 +16,9 @@ type UserRepository interface {
 	DeleteUserByID(id string) error
 	DeleteDriverByUserID(userID string) error
 	EditDriver(driver *entity.Driver) (*entity.Driver, error)
+}
+
+type ImageRepository interface {
+	UploadAvatarToS3(file multipart.File, fileName string, contentType string) (string, error)
+	UploadLicenseToS3(file multipart.File, fileName string, contentType string) (string, error)
 }
