@@ -77,6 +77,7 @@ func (r *userRepository) EditUser(user *entity.User) (*entity.User, error) {
 		Email:          user.Email,
 		Name:           user.Name,
 		PhoneNumber:    user.PhoneNumber,
+		AvatarURL:      user.AvatarURL,
 	}
 
 	err := r.db.Model(&Model.UserModel{}).Where("user_id = ?", user.ID).Updates(m).Error
@@ -155,11 +156,12 @@ func (r *userRepository) DeleteDriverByUserID(userID string) error {
 
 func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, error) {
 	m := Model.DriverModel{
-		UserID:      driver.UserID,
-		Name:        driver.Name,
-		ContactInfo: driver.ContactInfo,
-		ScooterType: driver.ScooterType,
-		PlateNum:    driver.PlateNum,
+		UserID:        driver.UserID,
+		Name:          driver.Name,
+		ContactInfo:   driver.ContactInfo,
+		ScooterType:   driver.ScooterType,
+		PlateNum:      driver.PlateNum,
+		DriverLicense: driver.DriverLicense,
 	}
 	err := r.db.Model(&Model.DriverModel{}).Where("user_id = ?", driver.UserID).Updates(m).Error
 	if err != nil {
