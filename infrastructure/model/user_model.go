@@ -7,6 +7,7 @@ type UserModel struct {
 	ProviderUserID string `gorm:"column:provider_user_id"`
 	Email          string `gorm:"column:user_email"`
 	PhoneNumber    string `gorm:"column:phone_number"`
+	AvatarURL      string `gorm:"column:avatar_url"`
 
 	Driver *DriverModel `gorm:"foreignKey:UserID;references:ID"`
 }
