@@ -101,6 +101,7 @@ func (r *userRepository) GetUserByID(id string) (*entity.User, error) {
 		Email:          m.Email,
 		Name:           m.Name,
 		PhoneNumber:    m.PhoneNumber,
+		AvatarURL:      m.AvatarURL,
 	}, nil
 }
 
@@ -112,11 +113,12 @@ func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error
 		return nil, err
 	}
 	return &entity.Driver{
-		UserID:      m.UserID,
-		Name:        m.Name,
-		ContactInfo: m.ContactInfo,
-		ScooterType: m.ScooterType,
-		PlateNum:    m.PlateNum,
+		UserID:        m.UserID,
+		Name:          m.Name,
+		ContactInfo:   m.ContactInfo,
+		ScooterType:   m.ScooterType,
+		PlateNum:      m.PlateNum,
+		DriverLicense: m.DriverLicense,
 	}, nil
 }
 
