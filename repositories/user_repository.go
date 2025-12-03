@@ -59,6 +59,7 @@ func (r *userRepository) CreateDriver(driver *entity.Driver) (*entity.Driver, er
 		ContactInfo: driver.ContactInfo,
 		ScooterType: driver.ScooterType,
 		PlateNum:    driver.PlateNum,
+		DriverLicense: m.DriverLicense,
 	}
 
 	err := r.db.Create(&m).Error
