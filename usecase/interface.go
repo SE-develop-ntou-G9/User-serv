@@ -13,6 +13,7 @@ type UserRepository interface {
 	GetUserByID(id string) (*entity.User, error)
 	GetDriverByUserID(userID string) (*entity.Driver, error)
 	GetAllUser() ([]entity.User, error)
+	GetAllDriver() ([]entity.Driver, error)
 	DeleteAllUser() error
 	DeleteUserByID(id string) error
 	DeleteDriverByUserID(userID string) error

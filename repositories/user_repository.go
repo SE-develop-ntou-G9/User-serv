@@ -147,6 +147,29 @@ func (r *userRepository) GetAllUser() ([]entity.User, error) {
 	return users, nil
 }
 
+func (r *userRepository) GetAllDriver() ([]entity.Driver, error) {
+	var models []Model.DriverModel
+	var drivers []entity.Driver
+
+	err := r.db.Find(&models).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for _, m := range models {
+		drivers = append(drivers, entity.Driver{
+			UserID:        m.UserID,
+			Name:          m.Name,
+			ContactInfo:   m.ContactInfo,
+			ScooterType:   m.ScooterType,
+			PlateNum:      m.PlateNum,
+			DriverLicense: m.DriverLicense,
+		})
+	}
+
+	return drivers, nil
+}
+
 func (r *userRepository) DeleteAllUser() error {
 	err := r.db.Exec("DELETE FROM driver_models").Error
 	if err != nil {
