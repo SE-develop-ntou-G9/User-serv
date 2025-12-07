@@ -123,6 +123,30 @@ func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error
 	}, nil
 }
 
+func (r *userRepository) GetAllUser() ([]entity.User, error) {
+	var models []Model.UserModel
+	var users []entity.User
+
+	err := r.db.Find(&models).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for _, m := range models {
+		users = append(users, entity.User{
+			ID:             m.ID,
+			Provider:       m.Provider,
+			ProviderUserID: m.ProviderUserID,
+			Email:          m.Email,
+			Name:           m.Name,
+			PhoneNumber:    m.PhoneNumber,
+			AvatarURL:      m.AvatarURL,
+		})
+	}
+
+	return users, nil
+}
+
 func (r *userRepository) DeleteAllUser() error {
 	err := r.db.Exec("DELETE FROM driver_models").Error
 	if err != nil {
