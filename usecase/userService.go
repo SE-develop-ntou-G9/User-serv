@@ -32,6 +32,14 @@ func (uc *UserUsecase) GetDriverByUserID(userID string) (*entity.Driver, error) 
 	return uc.repo.GetDriverByUserID(userID)
 }
 
+func (uc *UserUsecase) GetAllUser() ([]entity.User, error) {
+	return uc.repo.GetAllUser()
+}
+
+func (uc *UserUsecase) GetAllDriver() ([]entity.Driver, error) {
+	return uc.repo.GetAllDriver()
+}
+
 func (uc *UserUsecase) DeleteAllUser() error {
 	return uc.repo.DeleteAllUser()
 }

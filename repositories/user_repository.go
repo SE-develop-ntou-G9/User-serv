@@ -60,6 +60,7 @@ func (r *userRepository) CreateDriver(driver *entity.Driver) (*entity.Driver, er
 		ScooterType: driver.ScooterType,
 		PlateNum:    driver.PlateNum,
 		Status:      driver.Status,
+		DriverLicense: driver.DriverLicense,
 	}
 
 	err := r.db.Create(&m).Error
@@ -124,6 +125,54 @@ func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error
 		DriverLicense: m.DriverLicense,
 		Status:        m.Status,
 	}, nil
+}
+
+func (r *userRepository) GetAllUser() ([]entity.User, error) {
+	var models []Model.UserModel
+	var users []entity.User
+
+	err := r.db.Find(&models).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for _, m := range models {
+		users = append(users, entity.User{
+			ID:             m.ID,
+			Provider:       m.Provider,
+			ProviderUserID: m.ProviderUserID,
+			Email:          m.Email,
+			Name:           m.Name,
+			PhoneNumber:    m.PhoneNumber,
+			AvatarURL:      m.AvatarURL,
+		})
+	}
+
+	return users, nil
+}
+
+func (r *userRepository) GetAllDriver() ([]entity.Driver, error) {
+	var models []Model.DriverModel
+	var drivers []entity.Driver
+
+	err := r.db.Find(&models).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for _, m := range models {
+		drivers = append(drivers, entity.Driver{
+			UserID:        m.UserID,
+			Name:          m.Name,
+			ContactInfo:   m.ContactInfo,
+			ScooterType:   m.ScooterType,
+			PlateNum:      m.PlateNum,
+			DriverLicense: m.DriverLicense,
+      Status:        m.Status,
+		})
+	}
+
+	return drivers, nil
 }
 
 func (r *userRepository) DeleteAllUser() error {

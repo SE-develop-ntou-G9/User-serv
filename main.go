@@ -23,9 +23,11 @@ func main() {
 	imageRepo := repositories.NewImageRepository(s3client)
 
 	router := gin.Default()
-	v1 := router.Group("/v1")
 
 	router.Use(cors.Default())
+	v1 := router.Group("/v1")
+
+	
 
 	authUC := usecase.NewAuthUsecase(userRepo) // Assuming you have a userRepo instance
 	userUC := usecase.NewUserUsecase(userRepo)
