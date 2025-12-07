@@ -7,6 +7,7 @@ type DriverModel struct {
 	ScooterType   string `gorm:"column:scooter_type"`
 	PlateNum      string `gorm:"column:plate_num"`
 	DriverLicense string `gorm:"column:driver_license"`
+	Status        string `gorm:"column:status"`
 
 	User UserModel `gorm:"foreignKey:UserID;references:ID"`
 }
