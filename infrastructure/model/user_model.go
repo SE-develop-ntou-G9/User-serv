@@ -8,6 +8,7 @@ type UserModel struct {
 	Email          string `gorm:"column:user_email"`
 	PhoneNumber    string `gorm:"column:phone_number"`
 	AvatarURL      string `gorm:"column:avatar_url"`
+	Admin          bool   `gorm:"column:is_admin;default:false" json:"is_admin"`
 
 	Driver *DriverModel `gorm:"foreignKey:UserID;references:ID"`
 }

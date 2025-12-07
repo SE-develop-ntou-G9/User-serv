@@ -59,6 +59,7 @@ func (r *userRepository) CreateDriver(driver *entity.Driver) (*entity.Driver, er
 		ContactInfo: driver.ContactInfo,
 		ScooterType: driver.ScooterType,
 		PlateNum:    driver.PlateNum,
+		Status:      driver.Status,
 	}
 
 	err := r.db.Create(&m).Error
@@ -78,6 +79,7 @@ func (r *userRepository) EditUser(user *entity.User) (*entity.User, error) {
 		Name:           user.Name,
 		PhoneNumber:    user.PhoneNumber,
 		AvatarURL:      user.AvatarURL,
+		Admin:          user.Admin,
 	}
 
 	err := r.db.Model(&Model.UserModel{}).Where("user_id = ?", user.ID).Updates(m).Error
@@ -102,6 +104,7 @@ func (r *userRepository) GetUserByID(id string) (*entity.User, error) {
 		Name:           m.Name,
 		PhoneNumber:    m.PhoneNumber,
 		AvatarURL:      m.AvatarURL,
+		Admin:          m.Admin,
 	}, nil
 }
 
@@ -119,6 +122,7 @@ func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error
 		ScooterType:   m.ScooterType,
 		PlateNum:      m.PlateNum,
 		DriverLicense: m.DriverLicense,
+		Status:        m.Status,
 	}, nil
 }
 
@@ -164,6 +168,7 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
 		ScooterType:   driver.ScooterType,
 		PlateNum:      driver.PlateNum,
 		DriverLicense: driver.DriverLicense,
+		Status:        driver.Status,
 	}
 	err := r.db.Model(&Model.DriverModel{}).Where("user_id = ?", driver.UserID).Updates(m).Error
 	if err != nil {

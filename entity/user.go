@@ -8,6 +8,7 @@ type User struct {
 	Name           string
 	PhoneNumber    string
 	AvatarURL      string
+	Admin          bool
 }
 
 type Driver struct {
@@ -17,6 +18,7 @@ type Driver struct {
 	ScooterType   string `json:"scooter_type" binding:"required"`
 	PlateNum      string `json:"plate_num" binding:"required"`
 	DriverLicense string `json:"driver_license" binding:"required"`
+	Status        string `json:"status" binding:"required"`
 }
 
 type UserRepository interface {
