@@ -243,25 +243,25 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
         PhoneNumber: user.PhoneNumber,
         AvatarURL: user.AvatarURL,
         Admin: user.Admin,
-        IsDriver: false, // 預設不是司機
+        IsDriver: false,
     }
 
-	// 2. 查詢 Driver 詳細資料 (可選存在)
+	
 	driver, err := r.GetDriverByUserID(id)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// 找不到 Driver 記錄，這是正常情況，UserCompleteDetails 保持 IsDriver: false
+			
             return details, nil
 		}
-		// 其他資料庫錯誤，回傳錯誤
+		
 		return nil, err
 	}
 
-	// 3. 整合 Driver 專屬資訊 (如果 Driver 存在)
+	
     if driver != nil {
-        details.IsDriver = true // 確認是司機
-        // 只需要複製 Driver 獨有的欄位
+        details.IsDriver = true
+        
         details.ContactInfo = driver.ContactInfo
         details.ScooterType = driver.ScooterType
         details.PlateNum = driver.PlateNum
