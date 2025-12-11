@@ -168,7 +168,7 @@ func (r *userRepository) GetAllDriver() ([]entity.Driver, error) {
 			ScooterType:   m.ScooterType,
 			PlateNum:      m.PlateNum,
 			DriverLicense: m.DriverLicense,
-      Status:        m.Status,
+      		Status:        m.Status,
 		})
 	}
 
@@ -225,4 +225,50 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
 	}
 
 	return driver, nil
+
+	func (r *userRepository) GetUserAndDriverDetailsByID(id string) (*UserCompleteDetails, error) {
+	// 1. 查詢 User 詳細資料 (必須存在)
+	user, err := r.GetUserByID(id)
+	if err != nil {
+		return nil, err
+	}
+    
+    // 初始化結果 DTO
+    details := &UserCompleteDetails{
+        ID: user.ID,
+        Provider: user.Provider,
+        ProviderUserID: user.ProviderUserID,
+        Email: user.Email,
+        Name: user.Name,
+        PhoneNumber: user.PhoneNumber,
+        AvatarURL: user.AvatarURL,
+        Admin: user.Admin,
+        IsDriver: false, // 預設不是司機
+    }
+
+	// 2. 查詢 Driver 詳細資料 (可選存在)
+	driver, err := r.GetDriverByUserID(id)
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// 找不到 Driver 記錄，這是正常情況，UserCompleteDetails 保持 IsDriver: false
+            return details, nil
+		}
+		// 其他資料庫錯誤，回傳錯誤
+		return nil, err
+	}
+
+	// 3. 整合 Driver 專屬資訊 (如果 Driver 存在)
+    if driver != nil {
+        details.IsDriver = true // 確認是司機
+        // 只需要複製 Driver 獨有的欄位
+        details.ContactInfo = driver.ContactInfo
+        details.ScooterType = driver.ScooterType
+        details.PlateNum = driver.PlateNum
+        details.DriverLicense = driver.DriverLicense
+        details.DriverStatus = driver.Status 
+    }
+
+	return details, nil
+}
 }
