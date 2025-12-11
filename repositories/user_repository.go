@@ -227,13 +227,13 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
 	return driver, nil
 
 	func (r *userRepository) GetUserAndDriverDetailsByID(id string) (*UserCompleteDetails, error) {
-	// 1. 查詢 User 詳細資料 (必須存在)
+	
 	user, err := r.GetUserByID(id)
 	if err != nil {
 		return nil, err
 	}
     
-    // 初始化結果 DTO
+   
     details := &UserCompleteDetails{
         ID: user.ID,
         Provider: user.Provider,
