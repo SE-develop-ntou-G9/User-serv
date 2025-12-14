@@ -24,3 +24,10 @@ type ImageRepository interface {
 	UploadAvatarToS3(file multipart.File, fileName string, contentType string) (string, error)
 	UploadLicenseToS3(file multipart.File, fileName string, contentType string) (string, error)
 }
+
+type NotifyRepository interface {
+	Create(notify *entity.Notify) (*entity.Notify, error)
+	GetByRecieverID(recieverID string) ([]entity.Notify, error)
+	DeleteByRecieverID(id string) error
+	DeleteByID(id string) error
+}
