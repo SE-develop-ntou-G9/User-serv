@@ -21,6 +21,15 @@ type Driver struct {
 	Status        string `json:"status" binding:"required"`
 }
 
+type Notify struct {
+	ID         string `gorm:"primaryKey;type:char(36)"`
+	RecieverID string
+	SenderID   string
+	Message    string
+	Status     string
+	TimeStamp  string `gorm:"column:time_stamp"`
+}
+
 type UserRepository interface {
 	FindAll() ([]User, error)
 	Post(user User) error
