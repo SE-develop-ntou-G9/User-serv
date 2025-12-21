@@ -53,12 +53,12 @@ func (uc *AuthUsecase) LoginWithOAuth(provider string, gUser entity.User) (*enti
 		"email": u.Email,
 		"name":  u.Name,
 		"role":  role,
-		"iss":   "ntouber-user-serv",
 		"iat":   now.Unix(),
 		"exp":   now.Add(24 * time.Hour).Unix(),
 	}
 
 	tokenObj := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenObj.Header["kid"] = "ntouber-user-serv"
 	token, err := tokenObj.SignedString([]byte(secret))
 	if err != nil {
 		return nil, "", err
