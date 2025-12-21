@@ -30,7 +30,11 @@ func (r *userRepository) FindByProviderID(provider, providerUserID string) (*ent
 		ProviderUserID: m.ProviderUserID,
 		Email:          m.Email,
 		Name:           m.Name,
+		PhoneNumber:    m.PhoneNumber,
+		AvatarURL:      m.AvatarURL,
+		Admin:          m.Admin,
 	}, nil
+
 }
 
 func (r *userRepository) Create(user *entity.User) (*entity.User, error) {
