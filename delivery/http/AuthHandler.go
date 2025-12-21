@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"google.golang.org/api/idtoken"
 )
 
@@ -54,12 +53,8 @@ func (h *AuthHandler) googleCredentialHandler(c *gin.Context) {
 	email, _ := payload.Claims["email"].(string)
 	name, _ := payload.Claims["name"].(string)
 
-	newUUID, _ := uuid.NewRandom()
-	userID := newUUID.String()
-
 	// 你原本的 usecase 是吃 goth.User，我們自己組一個
 	oUser := entity.User{
-		ID:             userID,
 		Provider:       "google",
 		ProviderUserID: sub,
 		Email:          email,
