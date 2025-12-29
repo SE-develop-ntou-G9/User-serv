@@ -14,6 +14,24 @@ type userRepository struct {
 	db *gorm.DB
 }
 
+type UserCompleteDetails struct {
+	ID             string `json:"id"`
+	Provider       string `json:"provider"`
+	ProviderUserID string `json:"provider_user_id"`
+	Email          string `json:"email"`
+	Name           string `json:"name"`
+	PhoneNumber    string `json:"phone_number"`
+	AvatarURL      string `json:"avatar_url"`
+	Admin          bool   `json:"admin"`
+	IsDriver       bool   `json:"is_driver"`
+	// 以下為 Driver 相關欄位
+	ContactInfo   string `json:"contact_info,omitempty"`
+	ScooterType   string `json:"scooter_type,omitempty"`
+	PlateNum      string `json:"plate_num,omitempty"`
+	DriverLicense string `json:"driver_license,omitempty"`
+	DriverStatus  string `json:"driver_status,omitempty"`
+}
+
 func NewUserRepository(db *gorm.DB) *userRepository {
 	return &userRepository{db: db}
 }
