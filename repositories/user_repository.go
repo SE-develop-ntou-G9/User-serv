@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"errors"git
+	"errors"
 	"golangAPI/entity"
 
 	Model "golangAPI/infrastructure/model"
