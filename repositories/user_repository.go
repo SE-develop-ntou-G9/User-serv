@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"errors"git
 	"golangAPI/entity"
 
 	Model "golangAPI/infrastructure/model"
@@ -233,8 +234,9 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
 	}
 
 	return driver, nil
+}
 
-	func (r *userRepository) GetUserAndDriverDetailsByID(id string) (*UserCompleteDetails, error) {
+func (r *userRepository) GetUserAndDriverDetailsByID(id string) (*UserCompleteDetails, error) {
 	
 	user, err := r.GetUserByID(id)
 	if err != nil {
@@ -278,5 +280,4 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
     }
 
 	return details, nil
-}
 }
