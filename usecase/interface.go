@@ -30,4 +30,5 @@ type NotifyRepository interface {
 	GetByRecieverID(recieverID string) ([]entity.Notify, error)
 	DeleteByRecieverID(id string) error
 	DeleteByID(id string) error
+	UpdateStatusByID(id string, status string) error
 }

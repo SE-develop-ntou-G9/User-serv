@@ -66,3 +66,11 @@ func (r *notifyRepository) DeleteByID(id string) error {
 	err := r.db.Where("notify_id = ?", id).Delete(&Model.NotifyModel{}).Error
 	return err
 }
+
+func (r *notifyRepository) UpdateStatusByID(id string, status string) error {
+	// 使用 GORM 的 Model 與 Update 方法來更新指定欄位
+	err := r.db.Model(&Model.NotifyModel{}).
+		Where("notify_id = ?", id).
+		Update("status", status).Error
+	return err
+}

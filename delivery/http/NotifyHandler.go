@@ -18,6 +18,7 @@ func RegisterNotifyRoutes(r gin.IRoutes, notifyUC *usecase.NotifyUsecase) {
 	r.GET("/notifications/:reciever_id", h.GetNotificationsByRecieverID)
 	r.DELETE("/notifications/all/:reciever_id", h.DeleteNotificationsByRecieverID)
 	r.DELETE("/notifications/:id", h.DeleteNotificationByID)
+	r.PATCH("/notifications/:id", h.PatchNotificationStatus)
 }
 
 func (h *NotifyHandler) PostNotification(c *gin.Context) {
@@ -62,4 +63,19 @@ func (h *NotifyHandler) DeleteNotificationByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "notification deleted"})
+}
+
+func (h *NotifyHandler) PatchNotificationStatus(c *gin.Context) {
+	id := c.Param("id") // 取得 URL 中的 :id
+	
+	err := h.notifyUC.MarkAsRead(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update notification status"})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{
+		"message": "notification marked as readed",
+		"id":      id,
+	})
 }

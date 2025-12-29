@@ -27,3 +27,7 @@ func (uc *NotifyUsecase) DeleteNotificationByRecieverID(id string) error { //一
 func (uc *NotifyUsecase) DeleteNotificationByID(id string) error {
 	return uc.repo.DeleteByID(id)
 }
+
+func (uc *NotifyUsecase) MarkAsRead(id string) error {
+	return uc.repo.UpdateStatusByID(id, "readed")
+}
