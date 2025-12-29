@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"errors"
 	"golangAPI/entity"
 
 	Model "golangAPI/infrastructure/model"
@@ -12,24 +11,6 @@ import (
 
 type userRepository struct {
 	db *gorm.DB
-}
-
-type UserCompleteDetails struct {
-	ID             string `json:"id"`
-	Provider       string `json:"provider"`
-	ProviderUserID string `json:"provider_user_id"`
-	Email          string `json:"email"`
-	Name           string `json:"name"`
-	PhoneNumber    string `json:"phone_number"`
-	AvatarURL      string `json:"avatar_url"`
-	Admin          bool   `json:"admin"`
-	IsDriver       bool   `json:"is_driver"`
-	// 以下為 Driver 相關欄位
-	ContactInfo   string `json:"contact_info,omitempty"`
-	ScooterType   string `json:"scooter_type,omitempty"`
-	PlateNum      string `json:"plate_num,omitempty"`
-	DriverLicense string `json:"driver_license,omitempty"`
-	DriverStatus  string `json:"driver_status,omitempty"`
 }
 
 func NewUserRepository(db *gorm.DB) *userRepository {
@@ -87,7 +68,6 @@ func (r *userRepository) CreateDriver(driver *entity.Driver) (*entity.Driver, er
 		ScooterType: driver.ScooterType,
 		PlateNum:    driver.PlateNum,
 		Status:      driver.Status,
-		DriverLicense: driver.DriverLicense,
 	}
 
 	err := r.db.Create(&m).Error
@@ -154,54 +134,6 @@ func (r *userRepository) GetDriverByUserID(userID string) (*entity.Driver, error
 	}, nil
 }
 
-func (r *userRepository) GetAllUser() ([]entity.User, error) {
-	var models []Model.UserModel
-	var users []entity.User
-
-	err := r.db.Find(&models).Error
-	if err != nil {
-		return nil, err
-	}
-
-	for _, m := range models {
-		users = append(users, entity.User{
-			ID:             m.ID,
-			Provider:       m.Provider,
-			ProviderUserID: m.ProviderUserID,
-			Email:          m.Email,
-			Name:           m.Name,
-			PhoneNumber:    m.PhoneNumber,
-			AvatarURL:      m.AvatarURL,
-		})
-	}
-
-	return users, nil
-}
-
-func (r *userRepository) GetAllDriver() ([]entity.Driver, error) {
-	var models []Model.DriverModel
-	var drivers []entity.Driver
-
-	err := r.db.Find(&models).Error
-	if err != nil {
-		return nil, err
-	}
-
-	for _, m := range models {
-		drivers = append(drivers, entity.Driver{
-			UserID:        m.UserID,
-			Name:          m.Name,
-			ContactInfo:   m.ContactInfo,
-			ScooterType:   m.ScooterType,
-			PlateNum:      m.PlateNum,
-			DriverLicense: m.DriverLicense,
-      		Status:        m.Status,
-		})
-	}
-
-	return drivers, nil
-}
-
 func (r *userRepository) DeleteAllUser() error {
 	err := r.db.Exec("DELETE FROM driver_models").Error
 	if err != nil {
@@ -252,50 +184,4 @@ func (r *userRepository) EditDriver(driver *entity.Driver) (*entity.Driver, erro
 	}
 
 	return driver, nil
-}
-
-func (r *userRepository) GetUserAndDriverDetailsByID(id string) (*UserCompleteDetails, error) {
-	
-	user, err := r.GetUserByID(id)
-	if err != nil {
-		return nil, err
-	}
-    
-   
-    details := &UserCompleteDetails{
-        ID: user.ID,
-        Provider: user.Provider,
-        ProviderUserID: user.ProviderUserID,
-        Email: user.Email,
-        Name: user.Name,
-        PhoneNumber: user.PhoneNumber,
-        AvatarURL: user.AvatarURL,
-        Admin: user.Admin,
-        IsDriver: false,
-    }
-
-	
-	driver, err := r.GetDriverByUserID(id)
-
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			
-            return details, nil
-		}
-		
-		return nil, err
-	}
-
-	
-    if driver != nil {
-        details.IsDriver = true
-        
-        details.ContactInfo = driver.ContactInfo
-        details.ScooterType = driver.ScooterType
-        details.PlateNum = driver.PlateNum
-        details.DriverLicense = driver.DriverLicense
-        details.DriverStatus = driver.Status 
-    }
-
-	return details, nil
 }
