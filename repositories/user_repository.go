@@ -5,6 +5,7 @@ import (
 
 	Model "golangAPI/infrastructure/model"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -38,6 +39,9 @@ func (r *userRepository) FindByProviderID(provider, providerUserID string) (*ent
 }
 
 func (r *userRepository) Create(user *entity.User) (*entity.User, error) {
+	if user.ID == "" {
+		user.ID = uuid.New().String()
+	}
 	m := Model.UserModel{
 		ID:             user.ID,
 		Provider:       user.Provider,
